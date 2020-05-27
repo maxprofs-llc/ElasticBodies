@@ -12,27 +12,33 @@ using namespace glm;
 
 class Mesh {
 private:
-  char* file;
-  vector<ivec4> faces;
+  const char* file;
+  vector<ivec3> faces;
   vector<FVert*> verts;
   // should these be properties of mesh or bounding volumes
-  vec2 xExtremes;
-  vec2 yExtremes;
-  vec2 zExtremes;
 
-  void readFromFile();
-  void writeToFile(ProgramSettings* settings);
+  void readObjFromFile();
+  void readOffFromFile();
 public:
-  Mesh(string f);
+  dvec2 xBounds;
+  dvec2 yBounds;
+  dvec2 zBounds;
+
+  Mesh(string f, ProgramSettings* settings);
   ~Mesh();
-  void translate(float x, float y, float z);
-  void addVert(vec3 vert);
-  void addFace(ivec4 face);
-  BoundingVolume* createCubeBound(float height);
-  BoundingVolume* createTopBound(float depth);   // +z
-  BoundingVolume* createBotBound(float depth);   // -z
-  BoundingVolume* createRightBound(float depth); // +x
-  BoundingVolume* createLeftBound(float depth);  // -x
-  BoundingVolume* createFrontBound(float depth); // -y
-  BoundingVolume* createBackBound(float depth);  // +y
+  void translate(double x, double y, double z);
+  void addVert(dvec3 vert);
+  void addFace(ivec3 face);
+  void writeObjToFile(ProgramSettings* settings);
+  void writeOffToFile(ProgramSettings* settings);
+  BoundingVolume* createTopBound(double depth);   // +z
+  BoundingVolume* createBotBound(double depth);   // -z
+  BoundingVolume* createRightBound(double depth); // +x
+  BoundingVolume* createLeftBound(double depth);  // -x
+  BoundingVolume* createFrontBound(double depth); // -y
+  BoundingVolume* createBackBound(double depth);  // +y
+  BoundingVolume* createLineBound(double x, double y, double z, bool alongX, bool alongY, bool alongZ);
+  dvec2 xBnds();
+  dvec2 yBnds();
+  dvec2 zBnds();
 };
